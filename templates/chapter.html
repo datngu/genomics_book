@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% from "_macros.html" import actions, share with context %}
-{% block title %}{{ chapter.title }} - {{ book.title }}{% endblock %}
+{% block title %}{% if chapter.label %}{{ chapter.label }}. {% endif %}{{ chapter.title }} - {{ book.title }}{% endblock %}
 {% block description %}{{ chapter.title }}, bản nháp v{{ chapter.latest.version }}. {{ book.description }}{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Vị trí"><a href="{{ root }}">{{ book.title }}</a></nav>
 <section class="chapter-head">
-  <p class="eyebrow">Chương sách · bản nháp</p>
+  <p class="eyebrow">{% if chapter.label %}{{ chapter.label }} · {% endif %}Bản nháp</p>
   <h1>{{ chapter.title }}</h1>
   {% if chapter.latest %}
   <p class="meta"><span class="badge">v{{ chapter.latest.version }}</span> Bản nháp, cập nhật {{ chapter.latest.date }}</p>
@@ -13,7 +13,7 @@
   {% else %}
   <p class="meta"><span class="badge badge-muted">Sắp ra mắt</span></p>
   {% endif %}
-  {{ share(canonical, chapter.title ~ " - " ~ book.title) }}
+  {{ share(canonical, (chapter.label ~ ". " if chapter.label else "") ~ chapter.title ~ " - " ~ book.title) }}
 </section>
 
 {% if chapter.online_pdf %}

@@ -24,12 +24,13 @@
 <section id="cac-chuong" class="section">
   <div class="section-head">
     <h2>Các chương đã phát hành</h2>
-    {% if chapters %}<p class="muted">{{ chapters | length }} chương · mới cập nhật trước</p>{% endif %}
+    {% if chapters %}<p class="muted">{{ chapters | length }} phần đã phát hành</p>{% endif %}
   </div>
   {% if chapters %}
   <ol class="stream">
     {% for ch in chapters %}
     <li class="stream-item">
+      {% if ch.label %}<p class="eyebrow">{{ ch.label }}</p>{% endif %}
       <h3><a href="{{ root }}chuong/{{ ch.id }}/">{{ ch.title }}</a></h3>
       <p class="meta"><span class="badge">v{{ ch.latest.version }}</span> Cập nhật {{ ch.latest.date }}{% if ch.versions | length > 1 %} · {{ ch.versions | length }} phiên bản{% endif %}</p>
       {% if ch.latest.notes_html %}<div class="notes">{{ ch.latest.notes_html | safe }}</div>{% endif %}
@@ -50,7 +51,7 @@
     <li>
       <time>{{ u.version.date }}</time>
       <span class="badge">v{{ u.version.version }}</span>
-      <a href="{{ root }}chuong/{{ u.chapter.id }}/">{{ u.chapter.title }}</a>
+      <a href="{{ root }}chuong/{{ u.chapter.id }}/">{% if u.chapter.label %}{{ u.chapter.label }}. {% endif %}{{ u.chapter.title }}</a>
       {% if u.version is sameas u.chapter.versions[-1] %}<span class="tag-new">Chương mới</span>{% endif %}
     </li>
     {% endfor %}

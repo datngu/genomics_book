@@ -35,6 +35,10 @@ The release notes (Markdown, optional) become the changelog on the site.
 Publishing the release triggers a rebuild.
 A chapter appears on the site with its first release, and chapters are ordered by most recent update.
 The newest version of each chapter becomes the one shown and read online.
+
+The display order and chapter numbers are set in `book.yml` under `chapters` (`slug` and an optional `label` such as "Chương 1").
+Changing them is a normal commit and does not create a new version.
+A released chapter missing from that list is shown last.
 Older versions stay downloadable from the chapter page.
 Use `0.x.y` versions while the chapter is a draft.
 
@@ -58,6 +62,7 @@ It is public, because GitHub Pages has no access control.
    Change `repo` and `site_url` in `book.yml` if either moves.
 2. In *Settings → Pages*, *Source* is **GitHub Actions** and the custom domain is `cgbook.dattn.com`.
    DNS (Porkbun): `CNAME` record `cgbook` → `datngu.github.io`.
+   In *Settings → Environments → github-pages*, deployments are allowed from `main` and from tags matching `*-v*.*.*`, so release events can deploy.
 3. For page views, create a GoatCounter site, then:
    - set `goatcounter: "<code>"` in `book.yml`,
    - add the repository variable `GOATCOUNTER_CODE` with the same code,

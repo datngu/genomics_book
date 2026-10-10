@@ -121,6 +121,7 @@ strong, b { color: var(--accent); font-weight: 600; }
 
 .stream { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .stream-item { padding: 20px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.stream-item .eyebrow { margin-bottom: .3em; }
 .stream-item h3 { font-family: var(--serif); font-weight: 600; font-size: 1.3rem; margin-bottom: .3em; }
 .stream-item h3 a { color: var(--ink); text-decoration: none; }
 .stream-item h3 a:hover { color: var(--accent); }

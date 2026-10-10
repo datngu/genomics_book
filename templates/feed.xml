@@ -10,7 +10,7 @@
   <rights>© {{ year }} {{ book.author }}. Bảo lưu mọi quyền.</rights>
   {% for u in updates %}
   <entry>
-    <title>{{ u.chapter.title }} - v{{ u.version.version }}</title>
+    <title>{% if u.chapter.label %}{{ u.chapter.label }}. {% endif %}{{ u.chapter.title }} - v{{ u.version.version }}</title>
     <link href="{{ site_url }}chuong/{{ u.chapter.id }}/"/>
     <id>{{ site_url }}chuong/{{ u.chapter.id }}/#{{ u.version.tag }}</id>
     <updated>{{ u.version.published_at }}</updated>

@@ -29,14 +29,16 @@ To check a change visually, build with `--demo` and screenshot the pages with he
 
 Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committed) → `_site/` (generated, not committed).
 
-- `book.yml` holds only book metadata (title, repo, site URL, GoatCounter code).
-  It has no chapter list.
+- `book.yml` holds book metadata and an optional `chapters` list of `{slug, label}`.
+  That list sets the display order and labels such as "Chương 1" (`chapter_order`, `chapter_labels`).
+  It only affects released chapters, so it is not a planned table of contents.
+  Reordering or renumbering is a commit to `book.yml`, never a new release version.
 - Chapters and versions come entirely from GitHub Releases.
   A release counts if its tag matches `<slug>-vX.Y.Z` (`TAG_RE` in `bookctl.py`) and it has a `.pdf` asset.
   The slug is the chapter id and URL (`/chuong/<slug>/`).
   The release title is the chapter title, and the newest version's title wins (`chapter_titles`).
   The release body is the Markdown changelog.
-  Chapters are listed by most recent update.
+  The release title holds no chapter number; numbers live in `book.yml` labels.
 - `collect` writes `stats/releases.json` (reduced release metadata) and upserts today's cumulative per-asset `download_count` into `stats/downloads.csv`.
   It also re-fetches the last 14 days of GoatCounter hits into `stats/views.csv`.
 - `fetch-pdfs` downloads the latest PDF per chapter so the site can serve it for online reading under `_site/pdf/`.
@@ -49,6 +51,7 @@ Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committ
   The exception is `404.html`, which uses absolute `site_url` links.
 - `.github/workflows/site.yml` runs on push to `main`, on release events, daily (cron), and manually.
   It runs collect → fetch-pdfs → build, commits `stats/` back to `main`, and deploys `_site/` with `actions/deploy-pages`.
+  Release-triggered runs execute on the tag ref, so the `github-pages` environment has a deployment tag policy `*-v*.*.*` besides `main`.
 
 ## Conventions
 

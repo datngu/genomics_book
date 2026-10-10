@@ -235,6 +235,18 @@ def semver(v: str) -> tuple[int, ...]:
     return tuple(int(x) for x in v.split("."))
 
 
+def chapter_order(book: dict, releases: list[dict]) -> list[str]:
+    """Released chapters in display order: as listed in book.yml, then any others newest first."""
+    latest = latest_per_chapter(releases)
+    listed = [c["slug"] for c in book.get("chapters") or [] if c["slug"] in latest]
+    rest = sorted((c for c in latest if c not in listed), key=lambda c: latest[c]["published_at"], reverse=True)
+    return listed + rest
+
+
+def chapter_labels(book: dict) -> dict[str, str]:
+    return {c["slug"]: c.get("label", "") for c in book.get("chapters") or []}
+
+
 def chapter_titles(releases: list[dict]) -> dict[str, str]:
     """Chapter title = title of its newest release, so renaming a chapter takes one release."""
     return {
@@ -243,7 +255,7 @@ def chapter_titles(releases: list[dict]) -> dict[str, str]:
     }
 
 
-def compute_stats(releases: list[dict], downloads: list[dict], bots: list[dict], views: list[dict], end: date) -> dict:
+def compute_stats(book: dict, releases: list[dict], downloads: list[dict], bots: list[dict], views: list[dict], end: date) -> dict:
     """Turn raw snapshots into the dashboard data set (see static/stats.js)."""
     # Bot downloads per asset, cumulative by date, so they can be subtracted from GitHub's counter.
     bot_events: dict[str, list[str]] = {}
@@ -302,9 +314,9 @@ def compute_stats(releases: list[dict], downloads: list[dict], bots: list[dict],
             )
             d += timedelta(days=1)
 
-    titles = chapter_titles(releases)
-    latest = latest_per_chapter(releases)
-    chapter_totals = {cid: 0 for cid in sorted(latest, key=lambda c: latest[c]["published_at"], reverse=True)}
+    labels = chapter_labels(book)
+    titles = {cid: f"{labels[cid]}. {t}" if labels.get(cid) else t for cid, t in chapter_titles(releases).items()}
+    chapter_totals = {cid: 0 for cid in chapter_order(book, releases)}
     versions = []
     for r in releases:
         n = total_by_tag.get(r["tag"], 0)
@@ -403,6 +415,7 @@ def demo_pdf(text: str) -> bytes:
 class Chapter:
     id: str
     title: str
+    label: str = ""  # e.g. "Chương 1", from book.yml
     versions: list[dict] = field(default_factory=list)  # newest first
     online_pdf: str | None = None  # path under _site, when a copy is available
     downloads: int = 0
@@ -429,11 +442,12 @@ def cmd_build(args) -> None:
     end = today()
     if args.demo:
         releases, downloads, bots, views = demo_data(book, end)
+        book["chapters"] = [{"slug": "nhap-mon", "label": "Chương 1"}, {"slug": "giai-trinh-tu", "label": "Chương 2"}]
     else:
         releases = json.loads(RELEASES_JSON.read_text(encoding="utf-8")) if RELEASES_JSON.exists() else []
         downloads, bots, views = read_csv(DOWNLOADS_CSV), read_csv(BOT_CSV), read_csv(VIEWS_CSV)
 
-    stats = compute_stats(releases, downloads, bots, views, end)
+    stats = compute_stats(book, releases, downloads, bots, views, end)
     stats["demo"] = args.demo
     downloads_by_tag = {v["tag"]: v["downloads"] for v in stats["versions"]}
 
@@ -445,12 +459,12 @@ def cmd_build(args) -> None:
     if host and not host.endswith(".github.io"):
         (OUT / "CNAME").write_text(host + "\n", encoding="utf-8")
 
-    # Chapters exist only once released, ordered by their most recent update.
-    latest = latest_per_chapter(releases)
+    # Chapters exist only once released, in the order given by book.yml.
     titles = chapter_titles(releases)
+    labels = chapter_labels(book)
     chapters: list[Chapter] = []
-    for cid in sorted(latest, key=lambda c: latest[c]["published_at"], reverse=True):
-        ch = Chapter(id=cid, title=titles[cid])
+    for cid in chapter_order(book, releases):
+        ch = Chapter(id=cid, title=titles[cid], label=labels.get(cid, ""))
         for r in sorted((r for r in releases if r["chapter"] == cid), key=lambda r: semver(r["version"]), reverse=True):
             asset = r["assets"][0] if r["assets"] else None
             ch.versions.append(

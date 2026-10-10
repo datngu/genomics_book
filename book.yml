@@ -1,5 +1,5 @@
-# Book metadata. Chapters are not listed here: a chapter appears on the site when its first
-# GitHub Release is published (tag "<slug>-v<semver>", release title = chapter title).
+# Book metadata. A chapter appears on the site when its first GitHub Release is published
+# (tag "<slug>-v<semver>", release title = chapter title).
 
 title: "Hệ gen học tính toán và Dữ liệu lớn"
 author: "Dat Nguyen"
@@ -18,3 +18,10 @@ goatcounter: ""
 
 # Optional link where readers can send feedback on the drafts.
 feedback_url: "https://github.com/datngu/genomics_book/issues"
+
+# Display order and labels of released chapters. Editing this is a normal commit, not a new version.
+# Entries for unreleased slugs are ignored. Released chapters missing here are listed last, newest first.
+chapters:
+  - slug: loi-tua
+  - slug: luoc-su
+    label: "Chương 1"
