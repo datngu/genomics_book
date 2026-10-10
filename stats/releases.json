@@ -9,10 +9,11 @@
     "html_url": "https://github.com/datngu/genomics_book/releases/tag/loi-tua-v0.1.0",
     "assets": [
       {
-        "id": 628090701,
+        "id": 628135168,
         "name": "loi-tua-v0.1.0.pdf",
-        "size": 102799,
+        "size": 102788,
         "download_count": 0,
+        "updated_at": "2026-10-10T14:09:07Z",
         "url": "https://github.com/datngu/genomics_book/releases/download/loi-tua-v0.1.0/loi-tua-v0.1.0.pdf"
       }
     ]
@@ -30,7 +31,8 @@
         "id": 628090877,
         "name": "luoc-su-v0.1.0.pdf",
         "size": 320378,
-        "download_count": 0,
+        "download_count": 1,
+        "updated_at": "2026-10-10T13:49:02Z",
         "url": "https://github.com/datngu/genomics_book/releases/download/luoc-su-v0.1.0/luoc-su-v0.1.0.pdf"
       }
     ]
