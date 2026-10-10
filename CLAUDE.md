@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A static GitHub Pages site for the Vietnamese book "Hệ gen học tính toán và Dữ liệu lớn", released chapter by chapter as PDF drafts.
 The book is an evolving stream, not a fixed design: there is no planned table of contents, and chapters have no numbers.
 The site UI and content are in Vietnamese.
-It is served at `https://book1.dattn.com/` (custom domain set in the repo Pages settings, DNS at Porkbun), from the repo `datngu/genomics_book`.
+It is served at `https://cgbook.dattn.com/` (custom domain set in the repo Pages settings, DNS at Porkbun), from the repo `datngu/genomics_book`.
 There is no book source here: PDFs are built elsewhere and published as GitHub Releases.
 
 ## Commands

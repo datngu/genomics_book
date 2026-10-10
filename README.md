@@ -54,10 +54,10 @@ It is public, because GitHub Pages has no access control.
 
 ## One-time setup
 
-1. The code lives in `datngu/genomics_book`, and the site is served at `https://book1.dattn.com/`.
+1. The code lives in `datngu/genomics_book`, and the site is served at `https://cgbook.dattn.com/`.
    Change `repo` and `site_url` in `book.yml` if either moves.
-2. In *Settings → Pages*, *Source* is **GitHub Actions** and the custom domain is `book1.dattn.com`.
-   DNS (Porkbun): `CNAME` record `book1` → `datngu.github.io`.
+2. In *Settings → Pages*, *Source* is **GitHub Actions** and the custom domain is `cgbook.dattn.com`.
+   DNS (Porkbun): `CNAME` record `cgbook` → `datngu.github.io`.
 3. For page views, create a GoatCounter site, then:
    - set `goatcounter: "<code>"` in `book.yml`,
    - add the repository variable `GOATCOUNTER_CODE` with the same code,

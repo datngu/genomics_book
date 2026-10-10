@@ -10,7 +10,7 @@ description: "Sách tiếng Việt về hệ gen học tính toán và dữ li�
 
 # GitHub repository that hosts the releases, and the public URL of the site.
 repo: "datngu/genomics_book"
-site_url: "https://book1.dattn.com/"
+site_url: "https://cgbook.dattn.com/"
 
 # Optional GoatCounter site code for page-view statistics (https://<code>.goatcounter.com).
 # Leave empty to disable page-view tracking.
