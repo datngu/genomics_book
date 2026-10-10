@@ -7,6 +7,7 @@ Subcommands:
   fetch-pdfs   Download the latest PDF of each chapter into .pdf-cache/ so the site
                can offer online reading. Every real download is logged in
                stats/bot_downloads.csv and subtracted from the reader counts.
+  sync-preface Convert the LaTeX preface (frontmatter/preface.tex) into content/preface.md.
   build        Render the site into _site/ from book.yml and stats/ (offline).
                With --demo, use synthetic releases and statistics instead.
 """
@@ -33,6 +34,8 @@ OUT = ROOT / "_site"
 CACHE = ROOT / ".pdf-cache"
 TEMPLATES = ROOT / "templates"
 CONTENT = ROOT / "content"
+LICENSE = ROOT / "LICENSE"
+README = ROOT / "README.md"
 STATIC = ROOT / "static"
 
 RELEASES_JSON = STATS / "releases.json"
@@ -125,6 +128,7 @@ def fetch_releases(repo: str) -> list[dict]:
                         "name": a["name"],
                         "size": a["size"],
                         "download_count": a["download_count"],
+                        "updated_at": a["updated_at"],
                         "url": a["browser_download_url"],
                     }
                     for a in r.get("assets", [])
@@ -226,6 +230,61 @@ def cmd_fetch_pdfs(_args) -> None:
             bots.append({"date": today().isoformat(), "asset_id": a["id"]})
             print(f"fetch-pdfs: cached {a['name']}")
     write_csv(BOT_CSV, BOT_FIELDS, bots)
+
+
+# ---------------------------------------------------------------- sync-preface
+
+PREFACE_TEX = Path.home() / "github" / "cg_book_vn_latex" / "frontmatter" / "preface.tex"
+SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?=[A-ZÀ-ỸĐ“(*])")
+
+
+def latex_inline(text: str) -> str:
+    """The inline LaTeX the preface uses, as Markdown."""
+    text = re.sub(r"\\footnote\{\\url\{([^}]*)\}\}", lambda m: f" ([{urllib.parse.urlparse(m[1]).hostname}]({m[1]}))", text)
+    text = re.sub(r"\\eng\{([^}]*)\}", r"(*\1*)", text)  # preamble.tex: \eng{x} = (\textit{x})
+    text = re.sub(r"\\textit\{([^}]*)\}", r"*\1*", text)
+    text = re.sub(r"\\textbf\{([^}]*)\}", r"**\1**", text)
+    text = re.sub(r"``(.*?)''", r"“\1”", text)
+    return text.replace("~", " ").replace("--", "–")
+
+
+def cmd_sync_preface(args) -> None:
+    src = Path(args.tex)
+    tex = "\n".join(line for line in src.read_text(encoding="utf-8").splitlines() if not line.lstrip().startswith("%"))
+    tex = re.sub(r"\\(chapter\*|markboth|addcontentsline)(\{[^}]*\})+", "", tex)
+
+    # The closing minipage holds the dedication, place and date, and signature, one per "\\" line.
+    signature = ""
+    m = re.search(r"\\begin\{minipage\}\{[^}]*\}(?:\\raggedleft)?(.*?)\\end\{minipage\}", tex, re.S)
+    if m:
+        lines = [latex_inline(x.strip()) for x in re.split(r"\\\\(?:\[[^\]]*\])?", m[1]) if x.strip()]
+        signature = '<div class="signature">\n' + "".join(f"<p>{markdown_inline(x)}</p>\n" for x in lines) + "</div>\n"
+        tex = tex[: tex.rfind("\\par", 0, m.start())] if "\\par" in tex[: m.start()] else tex[: m.start()]
+
+    blocks = []
+    for para in re.split(r"\n\s*\n", tex):
+        para = " ".join(para.split())
+        if not para:
+            continue
+        h = re.fullmatch(r"\\section\*\{([^}]*)\}", para)
+        if h:
+            blocks.append(f"## {latex_inline(h[1])}")
+        else:
+            blocks.append("\n".join(SENTENCE_END.split(latex_inline(para))))  # one sentence per line
+    out = "\n\n".join(blocks) + "\n\n" + signature
+    leftover = re.findall(r"\\[a-zA-Z]+", out)
+    if leftover:
+        sys.exit(f"sync-preface: unconverted LaTeX commands {sorted(set(leftover))}; extend latex_inline")
+    target = CONTENT / "preface.md"
+    target.write_text(out, encoding="utf-8")
+    print(f"sync-preface: {src} -> {target.relative_to(ROOT)}")
+
+
+def markdown_inline(text: str) -> str:
+    import markdown
+
+    html = markdown.markdown(text)
+    return html.removeprefix("<p>").removesuffix("</p>")
 
 
 # ---------------------------------------------------------------- statistics
@@ -471,6 +530,8 @@ def cmd_build(args) -> None:
                 {
                     **r,
                     "date": vi_date(r["published_at"]),
+                    # A draft PDF can be replaced inside the same version; show when the file last changed.
+                    "updated": vi_date(asset.get("updated_at") or r["published_at"]) if asset else vi_date(r["published_at"]),
                     "notes_html": markdown.markdown(r["notes"]),
                     "pdf_url": asset["url"] if asset else r["html_url"],
                     "pdf_size": human_size(asset["size"]) if asset else "",
@@ -523,7 +584,11 @@ def cmd_build(args) -> None:
     render("index.html", "", updates=updates[:8], preface=preface)
     for ch in chapters:
         render("chapter.html", f"chuong/{ch.id}/", chapter=ch)
-    render("license.html", "ban-quyen/")
+    # LICENSE is the single source of the copyright text; README must quote it verbatim.
+    license_text = LICENSE.read_text(encoding="utf-8").strip()
+    if license_text not in README.read_text(encoding="utf-8"):
+        sys.exit("build: README.md must contain the LICENSE text verbatim")
+    render("license.html", "ban-quyen/", license_paragraphs=[p.strip() for p in license_text.split("\n\n")])
     render("stats.html", "thong-ke/", stats_json=json.dumps(stats, ensure_ascii=False).replace("</", "<\\/"))
     render("404.html", "404.html", root=site_url)  # served at any depth, so links must be absolute
     render("feed.xml", "feed.xml", updates=updates, site_url=site_url, now=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
@@ -543,6 +608,9 @@ def main() -> None:
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("collect").set_defaults(func=cmd_collect)
     sub.add_parser("fetch-pdfs").set_defaults(func=cmd_fetch_pdfs)
+    sp = sub.add_parser("sync-preface")
+    sp.add_argument("tex", nargs="?", default=str(PREFACE_TEX), help=f"LaTeX preface (default: {PREFACE_TEX})")
+    sp.set_defaults(func=cmd_sync_preface)
     b = sub.add_parser("build")
     b.add_argument("--demo", action="store_true", help="use synthetic releases and statistics")
     b.set_defaults(func=cmd_build)

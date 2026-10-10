@@ -27,7 +27,7 @@ Nhìn lại, điều tác giả cần nhất khi mới bắt đầu không phả
 Đó cũng là điều mà cuốn sách này muốn mang đến cho bạn đọc.
 
 Một chút ngoài lề, cách tiếp cận này cũng chính là cách tác giả đến với khoa học tính toán.
-Còn nhớ ngày ấy, khi đang ở sa mạc Arava (một vùng hẻo lánh ở miền nam Israel), tác giả tình cờ thấy quảng cáo khóa học về AI [Elements of AI](https://www.elementsofai.com/) của Đại học Helsinki trên fanpage của Đại sứ quán Phần Lan.
+Còn nhớ ngày ấy, khi đang ở sa mạc Arava (một vùng hẻo lánh ở miền nam Israel), tác giả tình cờ thấy quảng cáo khóa học về AI Elements of AI ([www.elementsofai.com](https://www.elementsofai.com/)) của Đại học Helsinki trên fanpage của Đại sứ quán Phần Lan.
 Với sự tò mò của một sinh viên trẻ, tác giả đăng ký theo học.
 May mắn là khóa học không quá khó để hoàn thành, nhưng đủ để nhen nhóm một chút đam mê, và không lâu sau đó, tác giả bắt đầu với tin sinh học!
 
@@ -58,7 +58,7 @@ Những chủ đề như cấu trúc protein, thiết kế thuốc hay các cơ 
 
 Về các con số trong sách, những số liệu như kích thước hệ gen, số gen hay tỉ lệ trình tự không mã hóa đều là ước tính, và đã được làm tròn để dễ nhớ thay vì chính xác tuyệt đối.
 Bản thân các ước tính này cũng thay đổi theo thời gian, khi công nghệ giải trình tự, hệ gen tham chiếu và thuật toán phân tích được cải tiến; số gen mã hóa protein ở người là một ví dụ điển hình, đã được điều chỉnh nhiều lần qua từng giai đoạn nghiên cứu.
-Đây không phải là khiếm khuyết của sách, mà phản ánh đúng bản chất của khoa học dữ liệu: mọi con số đều là kết quả của một phép đo và một mô hình, nên luôn có thể được cập nhật.
+Đây không phải là khiếm khuyết của sách, mà phản ánh đúng bản chất của khoa học dữ liệu, trong đó mọi con số đều là kết quả của một phép đo và một mô hình, nên luôn có thể được cập nhật.
 Nói cách khác, đó là một feature, không phải một bug.
 
 ## Cách đọc cuốn sách
@@ -78,6 +78,6 @@ Nếu sau khi đọc xong, bạn có thể mở một bài báo về sinh học 
 
 <div class="signature">
 <p><em>Cuốn sách này xin được dành để tưởng nhớ cô Lưu Thị Thanh Tú.</em></p>
-<p><em>Drammen, tháng X năm 2026</em></p>
-<p><strong>Nguyễn Thành Đạt</strong></p>
+<p><em>Drammen, tháng 09 năm 2026</em></p>
+<p><strong>Dat Nguyen</strong></p>
 </div>

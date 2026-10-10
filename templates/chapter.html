@@ -8,7 +8,7 @@
   <p class="eyebrow">{% if chapter.label %}{{ chapter.label }} · {% endif %}Bản nháp</p>
   <h1>{{ chapter.title }}</h1>
   {% if chapter.latest %}
-  <p class="meta"><span class="badge">v{{ chapter.latest.version }}</span> Bản nháp, cập nhật {{ chapter.latest.date }}</p>
+  <p class="meta"><span class="badge">v{{ chapter.latest.version }}</span> Bản nháp, cập nhật {{ chapter.latest.updated }}</p>
   {{ actions(chapter, root, detail=false) }}
   {% else %}
   <p class="meta"><span class="badge badge-muted">Sắp ra mắt</span></p>

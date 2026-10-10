@@ -32,7 +32,7 @@
     <li class="stream-item">
       {% if ch.label %}<p class="eyebrow">{{ ch.label }}</p>{% endif %}
       <h3><a href="{{ root }}chuong/{{ ch.id }}/">{{ ch.title }}</a></h3>
-      <p class="meta"><span class="badge">v{{ ch.latest.version }}</span> Cập nhật {{ ch.latest.date }}{% if ch.versions | length > 1 %} · {{ ch.versions | length }} phiên bản{% endif %}</p>
+      <p class="meta"><span class="badge">v{{ ch.latest.version }}</span> Cập nhật {{ ch.latest.updated }}{% if ch.versions | length > 1 %} · {{ ch.versions | length }} phiên bản{% endif %}</p>
       {% if ch.latest.notes_html %}<div class="notes">{{ ch.latest.notes_html | safe }}</div>{% endif %}
       {{ actions(ch, root) }}
     </li>
