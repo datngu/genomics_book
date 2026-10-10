@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "tag": "loi-tua-v0.1.0",
+    "chapter": "loi-tua",
+    "version": "0.1.0",
+    "name": "Lời tựa",
+    "published_at": "2026-10-10T13:48:56Z",
+    "notes": "Bản nháp đầu tiên.\n",
+    "html_url": "https://github.com/datngu/genomics_book/releases/tag/loi-tua-v0.1.0",
+    "assets": [
+      {
+        "id": 628090701,
+        "name": "loi-tua-v0.1.0.pdf",
+        "size": 102799,
+        "download_count": 0,
+        "url": "https://github.com/datngu/genomics_book/releases/download/loi-tua-v0.1.0/loi-tua-v0.1.0.pdf"
+      }
+    ]
+  },
+  {
+    "tag": "luoc-su-v0.1.0",
+    "chapter": "luoc-su",
+    "version": "0.1.0",
+    "name": "Lược sử sinh học phân tử và sự ra đời của hệ gen học tính toán",
+    "published_at": "2026-10-10T13:49:03Z",
+    "notes": "Bản nháp đầu tiên.\n",
+    "html_url": "https://github.com/datngu/genomics_book/releases/tag/luoc-su-v0.1.0",
+    "assets": [
+      {
+        "id": 628090877,
+        "name": "luoc-su-v0.1.0.pdf",
+        "size": 320378,
+        "download_count": 0,
+        "url": "https://github.com/datngu/genomics_book/releases/download/luoc-su-v0.1.0/luoc-su-v0.1.0.pdf"
+      }
+    ]
+  }
+]
