@@ -23,10 +23,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: main  # release events check out the tag; stats are committed to main
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -40,7 +40,7 @@ jobs:
           GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
 
       - name: Restore cached chapter PDFs
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .pdf-cache
           key: pdfs-${{ hashFiles('stats/releases.json') }}
@@ -63,8 +63,8 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -76,4 +76,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
