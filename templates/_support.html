@@ -1,0 +1,14 @@
+{% if support %}
+<section id="support" class="section">
+  <h2>Support the book</h2>
+  <div class="support">
+    <div class="prose-body">{{ support | safe }}</div>
+    {% if donate.qr %}
+    <figure>
+      <img src="{{ root }}{{ donate.qr }}" alt="VietQR code: {{ donate.bank }}, {{ donate.name }}, {{ donate.account }}" width="164" height="164" loading="lazy">
+      <figcaption>{{ donate.bank }}<br>{{ donate.name }}<br>{{ donate.account }}</figcaption>
+    </figure>
+    {% endif %}
+  </div>
+</section>
+{% endif %}

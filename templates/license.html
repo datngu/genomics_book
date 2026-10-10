@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Bản quyền - {{ book.title }}{% endblock %}
-{% block description %}Điều khoản bản quyền và sử dụng nội dung.{% endblock %}
+{% block title %}License - {{ book.title }}{% endblock %}
+{% block description %}Copyright and terms of use.{% endblock %}
 {% block content %}
 <section class="prose">
-  <h1>Bản quyền</h1>
+  <h1>License</h1>
   {% for para in license_paragraphs %}
   <h2 lang="{{ 'vi' if loop.first else 'en' }}">{{ 'Tiếng Việt' if loop.first else 'English' }}</h2>
   <p lang="{{ 'vi' if loop.first else 'en' }}">{{ para }}</p>

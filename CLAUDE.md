@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A static GitHub Pages site for the Vietnamese book "Hệ gen học tính toán và Dữ liệu lớn", released chapter by chapter as PDF drafts.
 The book is an evolving stream, not a fixed design: there is no planned table of contents, and chapters have no numbers.
-The site UI and content are in Vietnamese.
+Book content (title, preface, chapter titles, release notes) is in Vietnamese; interface labels are in English (Chapters, Updates, Read online).
+The author finds literal Vietnamese translations of UI terms unnatural, so do not translate labels back.
 It is served at `https://cgbook.dattn.com/` (custom domain set in the repo Pages settings, DNS at Porkbun), from the repo `datngu/genomics_book`.
 There is no book source here: PDFs are built elsewhere and published as GitHub Releases.
 
@@ -71,5 +72,10 @@ Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committ
   Never paraphrase it.
 - Chart colors follow the dataviz reference palette (`--series-1` blue for downloads, `--series-2` orange for views).
   Downloads and views always go on separate charts, never on a dual axis.
+- The design is deliberately plain and book-like: serif text on white, hairline rules, text links.
+  Avoid template tropes (cards with shadows, pill badges, uppercase eyebrow labels, big buttons).
+- The donation section reads `content/support.md` and `donate` in `book.yml`.
+  `static/donate-qr.svg` was regenerated from the bank app's VietQR payload (Techcombank 970407, account 9394247999, CRC verified) and checked by decoding it.
+  Never edit the SVG by hand; regenerate it from the payload if the account changes.
 - `stats/*.csv` are append/upsert histories written by the workflow.
   Do not rewrite them by hand except to fix corrupted data.

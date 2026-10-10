@@ -19,6 +19,13 @@ goatcounter: ""
 # Optional link where readers can send feedback on the drafts.
 feedback_url: "https://github.com/datngu/genomics_book/issues"
 
+# Donation QR (VietQR, regenerated as SVG from the bank app's QR) and the details shown under it.
+donate:
+  qr: "static/donate-qr.svg"
+  bank: "Techcombank"
+  name: "NGUYEN THANH DAT"
+  account: "9394 2479 99"
+
 # Display order and labels of released chapters. Editing this is a normal commit, not a new version.
 # Entries for unreleased slugs are ignored. Released chapters missing here are listed last, newest first.
 chapters:

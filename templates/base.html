@@ -17,38 +17,37 @@
   <link rel="alternate" type="application/atom+xml" title="{{ book.title }} - cập nhật" href="{{ root }}feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
   <link rel="stylesheet" href="{{ root }}static/style.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2300369f'/%3E%3Cpath d='M10 6c0 7 12 7 12 13s-12 6-12 7M22 6c0 7-12 7-12 13s12 6 12 7' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   {% block head %}{% endblock %}
 </head>
 <body>
   {% if demo %}
-  <div class="demo-banner">Bản xem thử: phiên bản, lượt tải và lượt xem đều là dữ liệu minh hoạ.</div>
+  <div class="demo-banner">Preview with sample data: versions, downloads and views are made up.</div>
   {% endif %}
   <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="brand" href="{{ root }}">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>{{ book.title }}</span>
-      </a>
-      <nav aria-label="Điều hướng chính">
-        <a href="{{ root }}#loi-tua">Lời tựa</a>
-        <a href="{{ root }}#cac-chuong">Các chương</a>
-        <a href="{{ root }}thong-ke/">Thống kê</a>
-        <a href="{{ root }}ban-quyen/">Bản quyền</a>
+    <div class="wrap {% block wide %}{% endblock %} header-inner">
+      <a class="brand" href="{{ root }}">{{ book.title }}</a>
+      <nav aria-label="Main">
+        <a href="{{ root }}#loi-tua">Preface</a>
+        <a href="{{ root }}#chapters">Chapters</a>
+        <a href="{{ root }}#updates">Updates</a>
+        <a href="{{ root }}#support">Support</a>
+        <a href="{{ root }}thong-ke/">Stats</a>
+        <a href="{{ root }}ban-quyen/">License</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap">
+  <main class="wrap {{ self.wide() }}">
     {% block content %}{% endblock %}
   </main>
 
   <footer class="site-footer">
-    <div class="wrap">
-      <p>© {{ year }} {{ book.author }}. Bảo lưu mọi quyền. Bạn đọc được phép đọc và chia sẻ đường dẫn tới bài gốc. Không được sao chép, đăng lại hay phân phối khi chưa có sự đồng ý bằng văn bản của tác giả. <a href="{{ root }}ban-quyen/">Điều khoản đầy đủ</a>.</p>
-      <p class="muted">Bản nháp, phát hành liên tục theo từng chương. <a href="{{ root }}feed.xml">Theo dõi cập nhật (RSS)</a>{% if book.feedback_url %} · <a href="{{ book.feedback_url }}">Góp ý</a>{% endif %}</p>
+    <div class="wrap {{ self.wide() }}">
+      <p>© {{ year }} {{ book.author }}. All rights reserved. Reading and sharing links is welcome; copying or reposting the content is not. <a href="{{ root }}ban-quyen/">License</a></p>
+      <p>Draft, released chapter by chapter · <a href="{{ root }}feed.xml">RSS</a>{% if book.feedback_url %} · <a href="{{ book.feedback_url }}">Feedback</a>{% endif %}</p>
     </div>
   </footer>
 

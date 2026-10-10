@@ -2,10 +2,10 @@
 document.querySelectorAll(".share").forEach((box) => {
   const url = box.dataset.shareUrl;
   const title = box.dataset.shareTitle;
-  const native = box.querySelector("[data-share-native]");
-  if (native && navigator.share) {
-    native.hidden = false;
-    native.addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
+  const native = box.querySelectorAll("[data-share-native]");
+  if (native.length && navigator.share) {
+    native.forEach((n) => (n.hidden = false));
+    native[native.length - 1].addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
   }
   const copy = box.querySelector("[data-share-copy]");
   if (copy) {
@@ -13,9 +13,9 @@ document.querySelectorAll(".share").forEach((box) => {
       const label = copy.textContent;
       try {
         await navigator.clipboard.writeText(url);
-        copy.textContent = "Đã sao chép";
+        copy.textContent = "Copied";
       } catch {
-        window.prompt("Sao chép liên kết:", url);
+        window.prompt("Copy this link:", url);
       }
       setTimeout(() => (copy.textContent = label), 1800);
     });

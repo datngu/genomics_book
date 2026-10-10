@@ -1,45 +1,42 @@
 {% extends "base.html" %}
-{% from "_macros.html" import actions, share with context %}
-{% block title %}{% if chapter.label %}{{ chapter.label }}. {% endif %}{{ chapter.title }} - {{ book.title }}{% endblock %}
-{% block description %}{{ chapter.title }}, bản nháp v{{ chapter.latest.version }}. {{ book.description }}{% endblock %}
+{% from "_macros.html" import links, share, full_title with context %}
+{% block title %}{{ full_title(chapter) }} - {{ book.title }}{% endblock %}
+{% block description %}{{ full_title(chapter) }}, draft v{{ chapter.latest.version }}. {{ book.description }}{% endblock %}
 {% block content %}
-<nav class="crumbs" aria-label="Vị trí"><a href="{{ root }}">{{ book.title }}</a></nav>
+<p class="crumbs"><a href="{{ root }}#chapters">← All chapters</a></p>
 <section class="chapter-head">
-  <p class="eyebrow">{% if chapter.label %}{{ chapter.label }} · {% endif %}Bản nháp</p>
-  <h1>{{ chapter.title }}</h1>
-  {% if chapter.latest %}
-  <p class="meta"><span class="badge">v{{ chapter.latest.version }}</span> Bản nháp, cập nhật {{ chapter.latest.updated }}</p>
-  {{ actions(chapter, root, detail=false) }}
-  {% else %}
-  <p class="meta"><span class="badge badge-muted">Sắp ra mắt</span></p>
-  {% endif %}
-  {{ share(canonical, (chapter.label ~ ". " if chapter.label else "") ~ chapter.title ~ " - " ~ book.title) }}
+  <h1>{{ full_title(chapter) }}</h1>
+  <p class="meta">Draft v{{ chapter.latest.version }} · updated {{ chapter.latest.updated }}</p>
+  {{ links(chapter, root, history=false) }}
+  {{ share(canonical, full_title(chapter) ~ " - " ~ book.title) }}
 </section>
 
 {% if chapter.online_pdf %}
 <section class="section reader">
-  <object data="{{ root }}{{ chapter.online_pdf }}#view=FitH" type="application/pdf" aria-label="{{ chapter.title }} (PDF)">
-    <p class="reader-fallback">Trình duyệt không hiển thị được PDF tại đây. <a href="{{ root }}{{ chapter.online_pdf }}" target="_blank" rel="noopener">Mở PDF trong thẻ mới</a>.</p>
+  <object data="{{ root }}{{ chapter.online_pdf }}#view=FitH" type="application/pdf" aria-label="{{ full_title(chapter) }} (PDF)">
+    <p class="reader-fallback">Your browser cannot show the PDF here. <a href="{{ root }}{{ chapter.online_pdf }}" target="_blank" rel="noopener">Open it in a new tab</a>.</p>
   </object>
 </section>
 {% endif %}
 
-{% if chapter.versions %}
 <section class="section">
-  <h2>Lịch sử phiên bản</h2>
+  <h2>Versions</h2>
   <ol class="versions">
     {% for v in chapter.versions %}
-    <li class="version {{ 'is-latest' if loop.first else '' }}">
+    <li>
       <div class="version-head">
-        <span class="badge">v{{ v.version }}</span>
+        <span class="ver">v{{ v.version }}</span>
         <time>{{ v.date }}</time>
-        {% if loop.first %}<span class="tag-latest">Mới nhất</span>{% endif %}
-        <a class="version-dl" href="{{ v.pdf_url }}" data-goatcounter-click="download/{{ v.tag }}">Tải PDF{% if v.pdf_size %} ({{ v.pdf_size }}){% endif %}</a>
+        {% if loop.first %}<span class="latest">latest</span>{% endif %}
+        <a href="{{ v.pdf_url }}" data-goatcounter-click="download/{{ v.tag }}">PDF{% if v.pdf_size %} ({{ v.pdf_size }}){% endif %}</a>
       </div>
       {% if v.notes_html %}<div class="notes">{{ v.notes_html | safe }}</div>{% endif %}
     </li>
     {% endfor %}
   </ol>
 </section>
+
+{% if support %}
+<p class="support-note">Finding this useful? You can <a href="{{ root }}#support">support the book</a> and help it reach print.</p>
 {% endif %}
 {% endblock %}

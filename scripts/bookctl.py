@@ -485,7 +485,7 @@ class Chapter:
 
 
 def human_size(n: int) -> str:
-    return f"{n / 1_000_000:.1f} MB".replace(".", ",")
+    return f"{n / 1_000_000:.1f} MB" if n >= 1_000_000 else f"{max(1, round(n / 1000))} KB"
 
 
 def vi_date(iso: str) -> str:
@@ -580,6 +580,14 @@ def cmd_build(args) -> None:
         html = markdown.markdown(preface_md.read_text(encoding="utf-8"))
         cut = html.find("<h2")
         preface = {"lead": html if cut < 0 else html[:cut], "rest": "" if cut < 0 else html[cut:]}
+
+    # Donation call: text from content/support.md, QR image from static/ when present.
+    support_md = CONTENT / "support.md"
+    common["support"] = markdown.markdown(support_md.read_text(encoding="utf-8")) if support_md.exists() else ""
+    donate = book.get("donate") or {}
+    if donate.get("qr") and not (ROOT / donate["qr"]).exists():
+        sys.exit(f"build: donation QR {donate['qr']} not found")
+    common["donate"] = donate
 
     render("index.html", "", updates=updates[:8], preface=preface)
     for ch in chapters:

@@ -2,8 +2,8 @@
 (() => {
   const data = JSON.parse(document.getElementById("stats-data").textContent);
   const tooltip = document.getElementById("tooltip");
-  const fmt = new Intl.NumberFormat("vi-VN");
-  const compact = new Intl.NumberFormat("vi-VN", { notation: "compact", maximumFractionDigits: 1 });
+  const fmt = new Intl.NumberFormat("en-US");
+  const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
   const SVG = "http://www.w3.org/2000/svg";
   let range = 30;
 
@@ -26,15 +26,15 @@
   function renderTiles() {
     const cur = slice(range);
     const prev = range ? data.days.slice(-2 * range, -range) : [];
-    const period = range ? `${range} ngày qua` : "Toàn thời gian";
+    const period = range ? `Last ${range} days` : "All time";
     const comparable = prev.length === range;
     const tiles = [
-      { label: "Lượt tải PDF", value: sum(cur, "downloads"), prev: comparable ? sum(prev, "downloads") : null, note: period },
+      { label: "PDF downloads", value: sum(cur, "downloads"), prev: comparable ? sum(prev, "downloads") : null, note: period },
       data.has_views
-        ? { label: "Lượt xem trang", value: sum(cur, "views"), prev: comparable ? sum(prev, "views") : null, note: period }
-        : { label: "Lượt xem trang", value: null, note: "Chưa bật GoatCounter" },
-      { label: "Tổng lượt tải", value: sum(data.chapters, "downloads"), note: "Từ trước tới nay" },
-      { label: "Chương đã phát hành", value: new Set(data.versions.map((v) => v.chapter)).size, note: `${data.versions.length} phiên bản` },
+        ? { label: "Page views", value: sum(cur, "views"), prev: comparable ? sum(prev, "views") : null, note: period }
+        : { label: "Page views", value: null, note: "GoatCounter not set up yet" },
+      { label: "Total downloads", value: sum(data.chapters, "downloads"), note: "Since the first release" },
+      { label: "Chapters released", value: new Set(data.versions.map((v) => v.chapter)).size, note: `${data.versions.length} versions` },
     ];
     const box = document.getElementById("tiles");
     box.replaceChildren(
@@ -47,7 +47,7 @@
           const diff = t.value - t.prev;
           const sign = diff >= 0 ? "+" : "";
           const pct = t.prev ? ` (${sign}${Math.round((100 * diff) / t.prev)}%)` : "";
-          note = `${t.note} · ${sign}${fmt.format(diff)}${pct} so với kỳ trước`;
+          note = `${t.note} · ${sign}${fmt.format(diff)}${pct} vs previous period`;
         }
         tile.append(el("div", { class: "tile-delta" }, note));
         return tile;
@@ -66,7 +66,7 @@
 
   function showTip(x, y, dateIso, value, color, label) {
     tooltip.replaceChildren();
-    tooltip.append(el("strong", {}, value === null ? "Không có số liệu" : fmt.format(value)));
+    tooltip.append(el("strong", {}, value === null ? "No data" : fmt.format(value)));
     const row = el("div");
     const key = el("span", { class: "key" });
     key.style.background = color;
@@ -94,7 +94,7 @@
     const x = (i) => m.l + (pts.length === 1 ? iw / 2 : (i * iw) / (pts.length - 1));
     const y = (v) => m.t + ih - (v / max) * ih;
 
-    const svg = el("svg:svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `${label} theo ngày`, tabindex: "0" });
+    const svg = el("svg:svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `${label} per day`, tabindex: "0" });
     for (let k = 0; k <= 4; k++) {
       const v = (max * k) / 4, yy = y(v);
       svg.append(el("svg:line", { x1: m.l, x2: W - m.r, y1: yy, y2: yy, class: k ? "grid-line" : "baseline" }));
@@ -195,7 +195,7 @@
     );
     if (!rows.length) {
       const tr = el("tr");
-      tr.append(el("td", { colspan: 4, class: "muted" }, "Chưa có số liệu."));
+      tr.append(el("td", { colspan: 4, class: "muted" }, "No data yet."));
       body.append(tr);
     }
   }
@@ -205,7 +205,7 @@
       [v.title], [`v${v.version}`], [ddmmyyyy(v.published)], [fmt.format(v.downloads), "num"],
     ]);
     fillTable("table-pages", data.pages, (p) => [
-      [el("code", {}, (p.event ? "sự kiện: " : "") + p.path)], [fmt.format(p.last30), "num"], [fmt.format(p.total), "num"],
+      [el("code", {}, (p.event ? "event: " : "") + p.path)], [fmt.format(p.last30), "num"], [fmt.format(p.total), "num"],
     ]);
     fillTable("table-days", [...slice(range)].reverse(), (d) => [
       [ddmmyyyy(d.date)],
@@ -217,13 +217,13 @@
   function render() {
     const rows = slice(range);
     renderTiles();
-    lineChart(document.getElementById("chart-downloads"), rows, "downloads", "--series-1", "Lượt tải", "Chưa có ảnh chụp số liệu lượt tải.");
-    lineChart(document.getElementById("chart-views"), rows, "views", "--series-2", "Lượt xem", data.has_views ? "Chưa có lượt xem." : "Chưa bật GoatCounter (xem README).");
+    lineChart(document.getElementById("chart-downloads"), rows, "downloads", "--series-1", "Downloads", "No download snapshots yet.");
+    lineChart(document.getElementById("chart-views"), rows, "views", "--series-2", "Views", data.has_views ? "No page views yet." : "GoatCounter is not set up yet (see README).");
     renderTables();
   }
 
   document.getElementById("dash-updated").textContent =
-    `Cập nhật lúc ${data.generated_at}. Số liệu được làm mới tự động mỗi ngày.` + (data.demo ? " Đây là dữ liệu minh hoạ." : "");
+    `Updated ${data.generated_at}. Refreshed automatically every day.` + (data.demo ? " Sample data." : "");
   document.querySelectorAll(".range button").forEach((b) =>
     b.addEventListener("click", () => {
       range = Number(b.dataset.range);
