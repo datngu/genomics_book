@@ -491,9 +491,11 @@ def cmd_build(args) -> None:
         ch.downloads = sum(v["downloads"] for v in ch.versions)
         chapters.append(ch)
 
+    # Release log: newest day first; releases from the same day follow the chapter order.
+    position = {ch.id: i for i, ch in enumerate(chapters)}
     updates = sorted(
         ({"chapter": ch, "version": v} for ch in chapters for v in ch.versions),
-        key=lambda u: u["version"]["published_at"],
+        key=lambda u: (u["version"]["published_at"][:10], -position[u["chapter"].id], u["version"]["published_at"]),
         reverse=True,
     )
 
