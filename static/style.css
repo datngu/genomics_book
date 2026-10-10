@@ -7,9 +7,9 @@
   --ink-2: #4a4f57;
   --muted: #7a7f87;
   --line: #e4e1d9;
-  --accent: #146356;
+  --accent: #00369f;
   --accent-ink: #ffffff;
-  --accent-soft: #e3f0ec;
+  --accent-soft: #e6ecf8;
   --banner: #fff4d6;
   /* Chart tokens (dataviz reference palette, light steps). */
   --chart-surface: #ffffff;
@@ -33,9 +33,9 @@
     --ink-2: #c3c2b7;
     --muted: #93918a;
     --line: #2f302d;
-    --accent: #5cc2a8;
-    --accent-ink: #0b1f1a;
-    --accent-soft: #1d322c;
+    --accent: #2698ba;
+    --accent-ink: #06161c;
+    --accent-soft: #15303a;
     --banner: #3a3115;
     --chart-surface: #1a1a19;
     --grid: #2c2c2a;
@@ -55,9 +55,9 @@
   --ink-2: #c3c2b7;
   --muted: #93918a;
   --line: #2f302d;
-  --accent: #5cc2a8;
-  --accent-ink: #0b1f1a;
-  --accent-soft: #1d322c;
+  --accent: #2698ba;
+  --accent-ink: #06161c;
+  --accent-soft: #15303a;
   --banner: #3a3115;
   --chart-surface: #1a1a19;
   --grid: #2c2c2a;
@@ -82,6 +82,8 @@ h1, .prose h2 { font-family: var(--serif); font-weight: 600; }
 h2 { font-size: 1.35rem; }
 p { margin: 0 0 1em; }
 .muted { color: var(--muted); }
+strong, b { color: var(--accent); font-weight: 600; }
+.tooltip strong { color: var(--ink); }
 
 .wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
