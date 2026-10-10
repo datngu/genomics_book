@@ -69,12 +69,15 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; font-size: 100%; }
+/* Larger type on desktop screens; every size below is in rem, so layout scales with it. */
+@media (min-width: 1024px) { html { font-size: 118.75%; } }
+@media (min-width: 1440px) { html { font-size: 125%; } }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font: 16px/1.65 var(--sans);
+  font: 1rem/1.65 var(--sans);
 }
 a { color: var(--accent); text-underline-offset: 3px; }
 h1, h2, h3 { line-height: 1.25; margin: 0 0 .5em; }
@@ -85,7 +88,7 @@ p { margin: 0 0 1em; }
 strong, b { color: var(--accent); font-weight: 600; }
 .tooltip strong { color: var(--ink); }
 
-.wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+.wrap { width: 100%; max-width: 62rem; margin: 0 auto; padding: 0 16px; }
 
 .demo-banner {
   background: var(--banner);
@@ -97,7 +100,7 @@ strong, b { color: var(--accent); font-weight: 600; }
 
 /* Header and footer */
 .site-header { border-bottom: 1px solid var(--line); background: var(--surface); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 3.75rem; flex-wrap: wrap; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 600; }
 .brand-mark { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); flex: none; }
 .site-header nav { display: flex; gap: 20px; font-size: .95rem; }
@@ -220,12 +223,12 @@ strong, b { color: var(--accent); font-weight: 600; }
 .card figcaption p { font-size: .8rem; margin: 0 0 8px; }
 .card summary { cursor: pointer; font-weight: 600; }
 
-.chart { position: relative; width: 100%; height: 220px; }
+.chart { position: relative; width: 100%; height: 14rem; }
 .chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .chart .empty, .bars .empty { color: var(--muted); font-size: .9rem; padding: 40px 0; text-align: center; }
 .grid-line { stroke: var(--grid); stroke-width: 1; }
 .baseline { stroke: var(--axis); stroke-width: 1; }
-.tick { fill: var(--axis-ink); font-size: 11px; font-variant-numeric: tabular-nums; }
+.tick { fill: var(--axis-ink); font-size: .7rem; font-variant-numeric: tabular-nums; }
 .crosshair { stroke: var(--axis); stroke-width: 1; }
 
 .bars { display: grid; gap: 10px; margin-top: 8px; }
