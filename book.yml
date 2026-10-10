@@ -1,0 +1,20 @@
+# Book metadata. Chapters are not listed here: a chapter appears on the site when its first
+# GitHub Release is published (tag "<slug>-v<semver>", release title = chapter title).
+
+title: "Hệ gen học tính toán và Dữ liệu lớn"
+author: "Dat Nguyen"
+year: 2026
+lang: vi
+# Used only for search engines, link previews and the RSS feed. Not shown on the page.
+description: "Sách tiếng Việt về hệ gen học tính toán và dữ liệu lớn, phát hành dần theo từng chương dưới dạng bản nháp PDF."
+
+# GitHub repository that hosts the releases, and the public URL of the site.
+repo: "datngu/genomics_book"
+site_url: "https://book1.dattn.com/"
+
+# Optional GoatCounter site code for page-view statistics (https://<code>.goatcounter.com).
+# Leave empty to disable page-view tracking.
+goatcounter: ""
+
+# Optional link where readers can send feedback on the drafts.
+feedback_url: "https://github.com/datngu/genomics_book/issues"

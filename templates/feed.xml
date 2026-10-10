@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="vi">
+  <title>{{ book.title }}</title>
+  <subtitle>{{ book.description }}</subtitle>
+  <link href="{{ site_url }}"/>
+  <link rel="self" href="{{ site_url }}feed.xml"/>
+  <id>{{ site_url }}</id>
+  <updated>{{ updates[0].version.published_at if updates else now }}</updated>
+  <author><name>{{ book.author }}</name></author>
+  <rights>© {{ year }} {{ book.author }}. Bảo lưu mọi quyền.</rights>
+  {% for u in updates %}
+  <entry>
+    <title>{{ u.chapter.title }} - v{{ u.version.version }}</title>
+    <link href="{{ site_url }}chuong/{{ u.chapter.id }}/"/>
+    <id>{{ site_url }}chuong/{{ u.chapter.id }}/#{{ u.version.tag }}</id>
+    <updated>{{ u.version.published_at }}</updated>
+    <content type="html">{{ u.version.notes_html }}</content>
+  </entry>
+  {% endfor %}
+</feed>

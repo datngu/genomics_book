@@ -1,0 +1,20 @@
+{% macro share(url, title) %}
+<div class="share" data-share-url="{{ url }}" data-share-title="{{ title }}">
+  <span class="share-label">Chia sẻ</span>
+  <button type="button" class="chip" data-share-native hidden>Chia sẻ…</button>
+  <a class="chip" href="https://www.facebook.com/sharer/sharer.php?u={{ url | urlencode }}" target="_blank" rel="noopener" data-goatcounter-click="share/facebook{{ url | replace(book.site_url, '/') }}">Facebook</a>
+  <a class="chip" href="https://www.linkedin.com/sharing/share-offsite/?url={{ url | urlencode }}" target="_blank" rel="noopener" data-goatcounter-click="share/linkedin{{ url | replace(book.site_url, '/') }}">LinkedIn</a>
+  <a class="chip" href="https://x.com/intent/post?url={{ url | urlencode }}&text={{ title | urlencode }}" target="_blank" rel="noopener" data-goatcounter-click="share/x{{ url | replace(book.site_url, '/') }}">X</a>
+  <button type="button" class="chip" data-share-copy>Sao chép liên kết</button>
+</div>
+{% endmacro %}
+
+{% macro actions(ch, root, detail=true) %}
+<div class="actions">
+  {% if ch.online_pdf %}
+  <a class="btn btn-primary" href="{{ root }}{{ ch.online_pdf }}" target="_blank" rel="noopener" data-goatcounter-click="read/{{ ch.latest.tag }}">Đọc trực tuyến</a>
+  {% endif %}
+  <a class="btn {{ 'btn-primary' if not ch.online_pdf else '' }}" href="{{ ch.latest.pdf_url }}" data-goatcounter-click="download/{{ ch.latest.tag }}">Tải PDF{% if ch.latest.pdf_size %} <span class="btn-meta">{{ ch.latest.pdf_size }}</span>{% endif %}</a>
+  {% if detail %}<a class="btn btn-ghost" href="{{ root }}chuong/{{ ch.id }}/">Lịch sử phiên bản</a>{% endif %}
+</div>
+{% endmacro %}

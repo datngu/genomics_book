@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "_macros.html" import actions, share with context %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Bản nháp · phát hành liên tục</p>
+  <h1>{{ book.title }}</h1>
+  <p class="byline">{{ book.author }}</p>
+  {{ share(book.site_url, book.title) }}
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Các chương đã phát hành</h2>
+    {% if chapters %}<p class="muted">{{ chapters | length }} chương · mới cập nhật trước</p>{% endif %}
+  </div>
+  {% if chapters %}
+  <ol class="stream">
+    {% for ch in chapters %}
+    <li class="stream-item">
+      <h3><a href="{{ root }}chuong/{{ ch.id }}/">{{ ch.title }}</a></h3>
+      <p class="meta"><span class="badge">v{{ ch.latest.version }}</span> Cập nhật {{ ch.latest.date }}{% if ch.versions | length > 1 %} · {{ ch.versions | length }} phiên bản{% endif %}</p>
+      {% if ch.latest.notes_html %}<div class="notes">{{ ch.latest.notes_html | safe }}</div>{% endif %}
+      {{ actions(ch, root) }}
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="muted">Chương đầu tiên sắp được phát hành.</p>
+  {% endif %}
+</section>
+
+{% if updates %}
+<section class="section">
+  <h2>Nhật ký phát hành</h2>
+  <ol class="timeline">
+    {% for u in updates %}
+    <li>
+      <time>{{ u.version.date }}</time>
+      <span class="badge">v{{ u.version.version }}</span>
+      <a href="{{ root }}chuong/{{ u.chapter.id }}/">{{ u.chapter.title }}</a>
+      {% if u.version is sameas u.chapter.versions[-1] %}<span class="tag-new">Chương mới</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+{% endblock %}

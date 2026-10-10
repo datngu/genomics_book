@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Không tìm thấy trang - {{ book.title }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="prose">
+  <h1>Không tìm thấy trang</h1>
+  <p>Đường dẫn này không tồn tại hoặc đã được thay đổi. <a href="{{ book.site_url }}">Về trang chủ</a>.</p>
+</section>
+{% endblock %}

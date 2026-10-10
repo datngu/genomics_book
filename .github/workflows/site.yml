@@ -1,0 +1,79 @@
+name: Site
+
+# Rebuild on content changes, on every chapter release, and once a day to refresh statistics.
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published, edited, deleted]
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit the daily stats snapshot
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main  # release events check out the tag; stats are committed to main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Collect statistics
+        run: python scripts/bookctl.py collect
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+
+      - name: Restore cached chapter PDFs
+        uses: actions/cache@v4
+        with:
+          path: .pdf-cache
+          key: pdfs-${{ hashFiles('stats/releases.json') }}
+          restore-keys: pdfs-
+
+      - name: Fetch latest chapter PDFs for online reading
+        run: python scripts/bookctl.py fetch-pdfs
+
+      - name: Build site
+        run: python scripts/bookctl.py build
+
+      - name: Commit statistics snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats
+          if ! git diff --cached --quiet; then
+            git commit -m "stats: snapshot $(date -u +%F)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Thống kê - {{ book.title }}{% endblock %}
+{% block description %}Bảng thống kê lượt tải và lượt xem.{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block content %}
+<section class="dash">
+  <div class="dash-head">
+    <div>
+      <p class="eyebrow">Bảng điều khiển của tác giả</p>
+      <h1>Thống kê</h1>
+      <p class="muted" id="dash-updated"></p>
+    </div>
+    <div class="range" role="group" aria-label="Khoảng thời gian">
+      <button type="button" data-range="7">7 ngày</button>
+      <button type="button" data-range="30" aria-pressed="true">30 ngày</button>
+      <button type="button" data-range="90">90 ngày</button>
+      <button type="button" data-range="0">Toàn bộ</button>
+    </div>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid-2">
+    <figure class="card">
+      <figcaption><h2>Lượt tải PDF mỗi ngày</h2><p class="muted">Từ bộ đếm của GitHub Releases, đã trừ lượt tải của máy chủ dựng trang.</p></figcaption>
+      <div class="chart" id="chart-downloads"></div>
+    </figure>
+    <figure class="card">
+      <figcaption><h2>Lượt xem trang mỗi ngày</h2><p class="muted">Từ GoatCounter, không tính sự kiện nhấp chuột.</p></figcaption>
+      <div class="chart" id="chart-views"></div>
+    </figure>
+  </div>
+
+  <figure class="card">
+    <figcaption><h2>Lượt tải theo chương</h2><p class="muted">Cộng dồn mọi phiên bản, toàn thời gian.</p></figcaption>
+    <div class="bars" id="chart-chapters"></div>
+  </figure>
+
+  <div class="grid-2">
+    <section class="card">
+      <h2>Theo phiên bản</h2>
+      <div class="table-wrap"><table id="table-versions"><thead><tr><th>Chương</th><th>Phiên bản</th><th>Phát hành</th><th class="num">Lượt tải</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>Trang và sự kiện</h2>
+      <div class="table-wrap"><table id="table-pages"><thead><tr><th>Đường dẫn</th><th class="num">30 ngày</th><th class="num">Tổng</th></tr></thead><tbody></tbody></table></div>
+    </section>
+  </div>
+
+  <details class="card">
+    <summary>Bảng số liệu theo ngày</summary>
+    <div class="table-wrap"><table id="table-days"><thead><tr><th>Ngày</th><th class="num">Lượt tải</th><th class="num">Lượt xem</th></tr></thead><tbody></tbody></table></div>
+  </details>
+  <div class="tooltip" id="tooltip" role="status" hidden></div>
+</section>
+<script type="application/json" id="stats-data">{{ stats_json | safe }}</script>
+{% endblock %}
+{% block scripts %}<script src="{{ root }}static/stats.js" defer></script>{% endblock %}
