@@ -152,6 +152,24 @@ strong, b { color: var(--accent); font-weight: 600; }
 .chip { font: inherit; font-size: .85rem; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); text-decoration: none; cursor: pointer; }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 
+/* Preface */
+.preface { max-width: 70ch; }
+.prose-body { font-family: var(--serif); font-size: 1.1rem; line-height: 1.75; }
+.prose-body p { margin: 0 0 1.1em; }
+.prose-body h2 { font-family: var(--serif); font-size: 1.3rem; margin: 1.6em 0 .6em; }
+.prose-body em { font-style: italic; }
+.signature { text-align: right; margin-top: 2em; }
+.signature p { margin: 0 0 .4em; }
+.preface-more summary { cursor: pointer; list-style: none; display: inline-flex; color: var(--accent); font-weight: 600; padding: 4px 0; }
+.preface-more summary::-webkit-details-marker { display: none; }
+.preface-more summary::after { content: "↓"; margin-left: 6px; }
+.preface-more[open] summary::after { content: "↑"; }
+.preface-more .more-open, .preface-more[open] .more-closed { display: none; }
+.preface-more[open] .more-open { display: inline; }
+.preface-more[open] summary { order: 2; margin-top: 8px; }
+.preface-more[open] { display: flex; flex-direction: column; }
+.preface-more > .prose-body { order: 1; }
+
 /* Chapter */
 .crumbs { margin-top: 28px; font-size: .875rem; color: var(--muted); }
 .crumbs a { color: var(--muted); }

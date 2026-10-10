@@ -8,7 +8,20 @@
   {{ share(book.site_url, book.title) }}
 </section>
 
-<section class="section">
+{% if preface.lead %}
+<section id="loi-tua" class="section preface">
+  <h2>Lời tựa</h2>
+  <div class="prose-body">{{ preface.lead | safe }}</div>
+  {% if preface.rest %}
+  <details class="preface-more">
+    <summary><span class="more-closed">Đọc tiếp lời tựa</span><span class="more-open">Thu gọn</span></summary>
+    <div class="prose-body">{{ preface.rest | safe }}</div>
+  </details>
+  {% endif %}
+</section>
+{% endif %}
+
+<section id="cac-chuong" class="section">
   <div class="section-head">
     <h2>Các chương đã phát hành</h2>
     {% if chapters %}<p class="muted">{{ chapters | length }} chương · mới cập nhật trước</p>{% endif %}

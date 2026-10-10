@@ -32,6 +32,7 @@ STATS = ROOT / "stats"
 OUT = ROOT / "_site"
 CACHE = ROOT / ".pdf-cache"
 TEMPLATES = ROOT / "templates"
+CONTENT = ROOT / "content"
 STATIC = ROOT / "static"
 
 RELEASES_JSON = STATS / "releases.json"
@@ -495,7 +496,15 @@ def cmd_build(args) -> None:
         html = env.get_template(template).render(**common, **ctx, root=root, page_path=path, canonical=site_url + path)
         target.write_text(html, encoding="utf-8")
 
-    render("index.html", "", updates=updates[:8])
+    # Preface on the home page: the opening paragraphs always show, the sections after the first heading fold.
+    preface = {"lead": "", "rest": ""}
+    preface_md = CONTENT / "preface.md"
+    if preface_md.exists():
+        html = markdown.markdown(preface_md.read_text(encoding="utf-8"))
+        cut = html.find("<h2")
+        preface = {"lead": html if cut < 0 else html[:cut], "rest": "" if cut < 0 else html[cut:]}
+
+    render("index.html", "", updates=updates[:8], preface=preface)
     for ch in chapters:
         render("chapter.html", f"chuong/{ch.id}/", chapter=ch)
     render("license.html", "ban-quyen/")

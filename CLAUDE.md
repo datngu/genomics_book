@@ -54,7 +54,9 @@ Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committ
 
 - URL paths are Vietnamese slugs: `/chuong/<id>/`, `/ban-quyen/`, `/thong-ke/`.
   The stats page is linked in the menu but is `noindex` and disallowed in `robots.txt`.
-- The home page must not grow a book introduction or a planned table of contents; the author asked for neither.
+- The home page shows the preface (`content/preface.md`, converted by hand from the LaTeX source in `cg_book_vn_latex/frontmatter`), but no planned table of contents.
+  The paragraphs before the first `##` heading always show; the rest folds behind "Đọc tiếp lời tựa".
+  When the LaTeX preface changes, re-sync this file: `\eng{x}` becomes `(*x*)`, ``` ``x'' ``` becomes “x”, and footnote URLs become inline links.
 - The copyright text in `templates/license.html` is the author's exact wording in Vietnamese and English.
   Do not paraphrase it.
 - Chart colors follow the dataviz reference palette (`--series-1` blue for downloads, `--series-2` orange for views).
