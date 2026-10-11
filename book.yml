@@ -14,7 +14,7 @@ site_url: "https://cgbook.dattn.com/"
 
 # Optional GoatCounter site code for page-view statistics (https://<code>.goatcounter.com).
 # Leave empty to disable page-view tracking.
-goatcounter: ""
+goatcounter: "cgbook"
 
 # Optional link where readers can send feedback on the drafts.
 feedback_url: "https://github.com/datngu/genomics_book/issues"
