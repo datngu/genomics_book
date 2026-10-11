@@ -86,8 +86,12 @@ def write_csv(path: Path, fields: list[str], rows: list[dict]) -> None:
 
 def http_json(url: str, headers: dict | None = None) -> tuple[object, dict]:
     req = urllib.request.Request(url, headers={"User-Agent": "genomics-book-site", **(headers or {})})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.load(resp), dict(resp.headers)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.load(resp), dict(resp.headers)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", "replace")[:500]
+        raise RuntimeError(f"HTTP {e.code} for {url.split('?')[0]}: {body}") from None
 
 
 def github_headers() -> dict:
@@ -147,7 +151,13 @@ def fetch_goatcounter(code: str, token: str, start: date, end: date) -> list[dic
     rows: list[dict] = []
     seen: list[str] = []
     while True:
-        params = [("start", start.isoformat()), ("end", end.isoformat()), ("daily", "true"), ("limit", "100")]
+        # The API wants RFC 3339 times rounded to the hour; "end" is exclusive, so use the next midnight.
+        params = [
+            ("start", f"{start.isoformat()}T00:00:00Z"),
+            ("end", f"{(end + timedelta(days=1)).isoformat()}T00:00:00Z"),
+            ("group", "day"),
+            ("limit", "100"),
+        ]
         params += [("exclude_paths", pid) for pid in seen]
         data, _ = http_json(f"{base}?{urllib.parse.urlencode(params)}", headers)
         hits = data.get("hits") or []
