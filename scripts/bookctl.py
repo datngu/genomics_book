@@ -22,6 +22,7 @@ import random
 import re
 import shutil
 import sys
+import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
@@ -207,7 +208,18 @@ def cmd_collect(_args) -> None:
         print("collect: GoatCounter code or token missing, page views skipped")
         return
     start = today() - timedelta(days=VIEWS_WINDOW_DAYS)
-    fetched = fetch_goatcounter(code, token, start, today())
+    # The GoatCounter API sometimes answers a valid request with a transient 404.
+    # Retry, and if it keeps failing, keep the previous views.csv so downloads still update and deploy.
+    for wait in (15, 60, None):
+        try:
+            fetched = fetch_goatcounter(code, token, start, today())
+            break
+        except (RuntimeError, OSError) as e:
+            if wait is None:
+                print(f"::warning::GoatCounter unavailable, page views not updated this run: {e}")
+                return
+            print(f"collect: GoatCounter failed ({e}), retrying in {wait}s")
+            time.sleep(wait)
     kept = [r for r in read_csv(VIEWS_CSV) if r["date"] < start.isoformat()]
     write_csv(VIEWS_CSV, VIEW_FIELDS, kept + fetched)
     print(f"collect: {len(fetched)} page-view rows since {start}")

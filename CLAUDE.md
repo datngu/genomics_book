@@ -44,6 +44,7 @@ Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committ
   The release title holds no chapter number; numbers live in `book.yml` labels.
 - `collect` writes `stats/releases.json` (reduced release metadata) and upserts today's cumulative per-asset `download_count` into `stats/downloads.csv`.
   It also re-fetches the last 14 days of GoatCounter hits into `stats/views.csv`.
+  If GoatCounter still fails after retries, it prints a warning and keeps the old `views.csv`, so downloads still update and the site still deploys.
 - `fetch-pdfs` downloads the latest PDF per chapter so the site can serve it for online reading under `_site/pdf/`.
   Each real download inflates GitHub's counter, so it is logged in `stats/bot_downloads.csv`, and `compute_stats` subtracts it.
   The workflow keeps `.pdf-cache/` in `actions/cache` so each asset is normally downloaded once.
