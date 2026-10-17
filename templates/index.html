@@ -8,7 +8,7 @@
 </section>
 
 {% if preface.lead %}
-<section id="loi-tua" class="section">
+<section id="preface" class="section">
   <h2>Lời tựa</h2>
   <div class="prose-body">{{ preface.lead | safe }}</div>
   {% if preface.rest %}
@@ -26,7 +26,7 @@
   <ol class="chapters">
     {% for ch in chapters %}
     <li>
-      <h3><a href="{{ root }}chuong/{{ ch.id }}/">{{ full_title(ch) }}</a></h3>
+      <h3><a href="{{ root }}chapters/{{ ch.id }}/">{{ full_title(ch) }}</a></h3>
       <p class="meta">Draft v{{ ch.latest.version }} · updated {{ ch.latest.updated }}{% if ch.versions | length > 1 %} · {{ ch.versions | length }} versions{% endif %}</p>
       {{ links(ch, root) }}
     </li>
@@ -47,7 +47,7 @@
     <li>
       <time>{{ u.version.date }}</time>
       <span class="ver">v{{ u.version.version }}</span>
-      <span><a href="{{ root }}chuong/{{ u.chapter.id }}/">{{ full_title(u.chapter) }}</a>{% if u.version is sameas u.chapter.versions[-1] %}<span class="new">new</span>{% endif %}</span>
+      <span><a href="{{ root }}chapters/{{ u.chapter.id }}/">{{ full_title(u.chapter) }}</a>{% if u.version is sameas u.chapter.versions[-1] %}<span class="new">new</span>{% endif %}</span>
     </li>
     {% endfor %}
   </ol>

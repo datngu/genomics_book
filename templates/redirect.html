@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="{{ book.lang }}">
+<head>
+  <meta charset="utf-8">
+  <title>{{ book.title }}</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta http-equiv="refresh" content="0; url={{ root }}{{ target }}">
+  <script>location.replace("{{ root }}{{ target }}" + location.hash);</script>
+</head>
+<body>
+  <p>This page has moved to <a href="{{ root }}{{ target }}">{{ canonical }}</a>.</p>
+</body>
+</html>

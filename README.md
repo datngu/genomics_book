@@ -14,11 +14,11 @@ python -m http.server 8765 -d _site      # open http://localhost:8765/
 ```
 
 Drop `--demo` to build from the real data in `stats/`.
-The author dashboard is at `/thong-ke/`.
+The author dashboard is at `/stats/`.
 
 ## Releasing a chapter
 
-First version of a new chapter (choose a short ASCII slug, it becomes the URL `/chuong/<slug>/`):
+First version of a new chapter (choose a short ASCII slug, it becomes the URL `/chapters/<slug>/`):
 
 ```sh
 scripts/release.sh rna-seq 0.1.0 build/rna-seq.pdf -t "Phân tích dữ liệu RNA-seq" -n notes.md
@@ -85,7 +85,7 @@ It is public, because GitHub Pages has no access control.
 
 ## License
 
-This text is identical to `LICENSE` and to the copyright page of the website (https://cgbook.dattn.com/ban-quyen/).
+This text is identical to `LICENSE` and to the copyright page of the website (https://cgbook.dattn.com/license/).
 The site build fails if they ever differ.
 
 © 2026 Dat Nguyen. Bảo lưu mọi quyền. Bạn đọc được phép đọc nội dung và chia sẻ bài viết gốc này bằng nút chia sẻ hoặc đường dẫn tới bài gốc. Không được sao chép, đăng lại, phân phối, chỉnh sửa, dịch hoặc sử dụng lại một phần hay toàn bộ nội dung, bao gồm văn bản và hình ảnh, khi chưa có sự đồng ý bằng văn bản của tác giả. Tác giả bảo lưu quyền chỉnh sửa nội dung bất cứ lúc nào mà không cần thông báo trước. Nội dung được cung cấp "nguyên trạng" (as is), chỉ nhằm mục đích học tập và tham khảo, không kèm bất kỳ bảo đảm nào; tác giả không chịu trách nhiệm hay nghĩa vụ đối với bất kỳ việc sử dụng nào từ nội dung này.

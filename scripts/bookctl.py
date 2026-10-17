@@ -51,6 +51,19 @@ VIEW_FIELDS = ["date", "path", "title", "event", "views"]
 # A chapter release is tagged "<slug>-v<semver>", e.g. "rna-seq-v0.2.0". The release title is the chapter title.
 TAG_RE = re.compile(r"^(?P<chapter>[a-z0-9]+(?:-[a-z0-9]+)*)-v(?P<version>\d+\.\d+\.\d+)$")
 VIEWS_WINDOW_DAYS = 14  # GoatCounter days re-fetched on every collect, to absorb late hits.
+# Old Vietnamese URL prefixes and their English replacements (renamed 2026-10-17).
+# The build keeps a redirect page at each old URL, and the stats merge old page views into the new path.
+MOVED_PATHS = {"chuong/": "chapters/", "ban-quyen/": "license/", "thong-ke/": "stats/", "cam-on/": "supporters/"}
+
+
+def current_path(path: str) -> str:
+    """Map a page-view path recorded under an old URL to its current URL."""
+    for old, new in MOVED_PATHS.items():
+        # GoatCounter drops the trailing slash ("/thong-ke"), so compare with one added.
+        if (path + "/").startswith("/" + old):
+            moved = "/" + new + path[len(old) + 1 :]
+            return moved if path.endswith("/") else moved.rstrip("/")
+    return path
 
 
 def today() -> date:
@@ -373,7 +386,8 @@ def compute_stats(book: dict, releases: list[dict], downloads: list[dict], bots:
         is_event = v.get("event") == "1"
         if not is_event:
             daily_views[v["date"]] = daily_views.get(v["date"], 0) + n
-        p = page_totals.setdefault((v["path"], is_event), {"path": v["path"], "title": v.get("title", ""), "event": is_event, "total": 0, "last30": 0})
+        path = v["path"] if is_event else current_path(v["path"])
+        p = page_totals.setdefault((path, is_event), {"path": path, "title": v.get("title", ""), "event": is_event, "total": 0, "last30": 0})
         p["total"] += n
         if v["date"] >= recent_cut:
             p["last30"] += n
@@ -454,7 +468,7 @@ def demo_data(book: dict, end: date) -> tuple[list[dict], list[dict], list[dict]
             downloads.append({"date": d.isoformat(), "tag": tag, "asset_id": aid, "asset_name": f"{tag}.pdf", "download_count": count})
             d += timedelta(days=1)
 
-    paths = [("/", "Trang chủ", 30)] + [(f"/chuong/{c}/", t, 10) for c, t in titles.items()] + [("/ban-quyen/", "Bản quyền", 1)]
+    paths = [("/", "Trang chủ", 30)] + [(f"/chapters/{c}/", t, 10) for c, t in titles.items()] + [("/license/", "License", 1)]
     d = start
     while d <= end:
         weekday_boost = 1.3 if d.weekday() < 5 else 0.7
@@ -592,7 +606,8 @@ def cmd_build(args) -> None:
         depth = path.count("/")
         target.parent.mkdir(parents=True, exist_ok=True)
         root = ctx.pop("root", "../" * depth)
-        html = env.get_template(template).render(**common, **ctx, root=root, page_path=path, canonical=site_url + path)
+        canonical = ctx.pop("canonical", site_url + path)
+        html = env.get_template(template).render(**common, **ctx, root=root, page_path=path, canonical=canonical)
         target.write_text(html, encoding="utf-8")
 
     # Preface on the home page: the opening paragraphs always show, the sections after the first heading fold.
@@ -616,20 +631,26 @@ def cmd_build(args) -> None:
 
     render("index.html", "", updates=updates[:8], preface=preface)
     for ch in chapters:
-        render("chapter.html", f"chuong/{ch.id}/", chapter=ch)
+        render("chapter.html", f"chapters/{ch.id}/", chapter=ch)
     # LICENSE is the single source of the copyright text; README must quote it verbatim.
     license_text = LICENSE.read_text(encoding="utf-8").strip()
     if license_text not in README.read_text(encoding="utf-8"):
         sys.exit("build: README.md must contain the LICENSE text verbatim")
     if common["supporters"]:
-        render("supporters.html", "cam-on/")
-    render("license.html", "ban-quyen/", license_paragraphs=[p.strip() for p in license_text.split("\n\n")])
-    render("stats.html", "thong-ke/", stats_json=json.dumps(stats, ensure_ascii=False).replace("</", "<\\/"))
+        render("supporters.html", "supporters/")
+    render("license.html", "license/", license_paragraphs=[p.strip() for p in license_text.split("\n\n")])
+    render("stats.html", "stats/", stats_json=json.dumps(stats, ensure_ascii=False).replace("</", "<\\/"))
     render("404.html", "404.html", root=site_url)  # served at any depth, so links must be absolute
     render("feed.xml", "feed.xml", updates=updates, site_url=site_url, now=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
 
-    (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /thong-ke/\nSitemap: {site_url}sitemap.xml\n", encoding="utf-8")
-    pages = ["", "ban-quyen/"] + (["cam-on/"] if common["supporters"] else []) + [f"chuong/{ch.id}/" for ch in chapters]
+    (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /stats/\nDisallow: /thong-ke/\nSitemap: {site_url}sitemap.xml\n", encoding="utf-8")
+    # Links shared before the rename keep working: each old URL redirects to its new one.
+    moved = [(old, new) for old, new in MOVED_PATHS.items() if old != "chuong/" and (OUT / new / "index.html").exists()]
+    moved += [(f"chuong/{ch.id}/", f"chapters/{ch.id}/") for ch in chapters]
+    for old, new in moved:
+        render("redirect.html", old, target=new, canonical=site_url + new)
+
+    pages = ["", "license/"] + (["supporters/"] if common["supporters"] else []) + [f"chapters/{ch.id}/" for ch in chapters]
     sitemap = "".join(f"  <url><loc>{site_url}{p}</loc></url>\n" for p in pages)
     (OUT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}</urlset>\n',

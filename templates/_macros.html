@@ -12,7 +12,7 @@
 <p class="links">
   {% if ch.online_pdf %}<a href="{{ root }}{{ ch.online_pdf }}" target="_blank" rel="noopener" data-goatcounter-click="read/{{ ch.latest.tag }}">Read online</a><span class="sep">·</span>{% endif %}
   <a href="{{ ch.latest.pdf_url }}" data-goatcounter-click="download/{{ ch.latest.tag }}">Download PDF</a>{% if ch.latest.pdf_size %} <span class="size">({{ ch.latest.pdf_size }})</span>{% endif %}
-  {% if history %}<span class="sep">·</span><a href="{{ root }}chuong/{{ ch.id }}/">Versions</a>{% endif %}
+  {% if history %}<span class="sep">·</span><a href="{{ root }}chapters/{{ ch.id }}/">Versions</a>{% endif %}
 </p>
 {% endmacro %}
 

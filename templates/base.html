@@ -30,12 +30,12 @@
     <div class="wrap {% block wide %}{% endblock %} header-inner">
       <a class="brand" href="{{ root }}">{{ book.title }}</a>
       <nav aria-label="Main">
-        <a href="{{ root }}#loi-tua">Preface</a>
+        <a href="{{ root }}#preface">Preface</a>
         <a href="{{ root }}#chapters">Chapters</a>
         <a href="{{ root }}#updates">Updates</a>
         <a href="{{ root }}#support">Support</a>
-        <a href="{{ root }}thong-ke/">Stats</a>
-        <a href="{{ root }}ban-quyen/">License</a>
+        <a href="{{ root }}stats/">Stats</a>
+        <a href="{{ root }}license/">License</a>
       </nav>
     </div>
   </header>
@@ -46,7 +46,7 @@
 
   <footer class="site-footer">
     <div class="wrap {{ self.wide() }}">
-      <p>© {{ year }} {{ book.author }}. All rights reserved. Reading and sharing links is welcome; copying or reposting the content is not. <a href="{{ root }}ban-quyen/">License</a></p>
+      <p>© {{ year }} {{ book.author }}. All rights reserved. Reading and sharing links is welcome; copying or reposting the content is not. <a href="{{ root }}license/">License</a></p>
       <p>Draft, released chapter by chapter · <a href="{{ root }}feed.xml">RSS</a>{% if book.feedback_url %} · <a href="{{ book.feedback_url }}">Feedback</a>{% endif %}</p>
     </div>
   </footer>
