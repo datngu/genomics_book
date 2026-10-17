@@ -32,3 +32,5 @@ chapters:
   - slug: loi-tua
   - slug: luoc-su
     label: "Chương 1"
+  - slug: du-lieu-he-gen
+    label: "Chương 2"

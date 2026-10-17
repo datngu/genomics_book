@@ -606,6 +606,9 @@ def cmd_build(args) -> None:
     # Donation call: text from content/support.md, QR image from static/ when present.
     support_md = CONTENT / "support.md"
     common["support"] = markdown.markdown(support_md.read_text(encoding="utf-8")) if support_md.exists() else ""
+    # Thank-you page listing supporters, from content/supporters.md when present.
+    supporters_md = CONTENT / "supporters.md"
+    common["supporters"] = markdown.markdown(supporters_md.read_text(encoding="utf-8")) if supporters_md.exists() else ""
     donate = book.get("donate") or {}
     if donate.get("qr") and not (ROOT / donate["qr"]).exists():
         sys.exit(f"build: donation QR {donate['qr']} not found")
@@ -618,13 +621,15 @@ def cmd_build(args) -> None:
     license_text = LICENSE.read_text(encoding="utf-8").strip()
     if license_text not in README.read_text(encoding="utf-8"):
         sys.exit("build: README.md must contain the LICENSE text verbatim")
+    if common["supporters"]:
+        render("supporters.html", "cam-on/")
     render("license.html", "ban-quyen/", license_paragraphs=[p.strip() for p in license_text.split("\n\n")])
     render("stats.html", "thong-ke/", stats_json=json.dumps(stats, ensure_ascii=False).replace("</", "<\\/"))
     render("404.html", "404.html", root=site_url)  # served at any depth, so links must be absolute
     render("feed.xml", "feed.xml", updates=updates, site_url=site_url, now=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
 
     (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /thong-ke/\nSitemap: {site_url}sitemap.xml\n", encoding="utf-8")
-    pages = ["", "ban-quyen/"] + [f"chuong/{ch.id}/" for ch in chapters]
+    pages = ["", "ban-quyen/"] + (["cam-on/"] if common["supporters"] else []) + [f"chuong/{ch.id}/" for ch in chapters]
     sitemap = "".join(f"  <url><loc>{site_url}{p}</loc></url>\n" for p in pages)
     (OUT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}</urlset>\n',

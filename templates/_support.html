@@ -2,7 +2,8 @@
 <section id="support" class="section">
   <h2>Support the book</h2>
   <div class="support">
-    <div class="prose-body">{{ support | safe }}</div>
+    <div class="prose-body">{{ support | safe }}{% if supporters %}
+      <p><a href="{{ root }}cam-on/">See who has supported the book</a></p>{% endif %}</div>
     {% if donate.qr %}
     <figure>
       <img src="{{ root }}{{ donate.qr }}" alt="VietQR code: {{ donate.bank }}, {{ donate.name }}, {{ donate.account }}" width="164" height="164" loading="lazy">

@@ -76,6 +76,7 @@ Data flows in one direction: GitHub Releases + GoatCounter → `stats/` (committ
 - The design is deliberately plain and book-like: serif text on white, hairline rules, text links.
   Avoid template tropes (cards with shadows, pill badges, uppercase eyebrow labels, big buttons).
 - The donation section reads `content/support.md` and `donate` in `book.yml`.
+  `content/supporters.md` is the hand-edited thank-you list, rendered at `/cam-on/` and linked from the donation section.
   `static/donate-qr.svg` was regenerated from the bank app's VietQR payload (Techcombank 970407, account 9394247999, CRC verified) and checked by decoding it.
   Never edit the SVG by hand; regenerate it from the payload if the account changes.
 - `stats/*.csv` are append/upsert histories written by the workflow.

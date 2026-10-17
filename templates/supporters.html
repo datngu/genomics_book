@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Supporters - {{ book.title }}{% endblock %}
+{% block description %}Những bạn đọc đã ủng hộ cuốn sách.{% endblock %}
+{% block content %}
+<section class="prose">
+  <h1>Supporters</h1>
+  <div class="prose-body">{{ supporters | safe }}</div>
+  <p><a href="{{ root }}#support">Support the book</a></p>
+</section>
+{% endblock %}
