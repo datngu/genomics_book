@@ -1,5 +1,24 @@
 [
   {
+    "tag": "du-lieu-he-gen-v0.1.0",
+    "chapter": "du-lieu-he-gen",
+    "version": "0.1.0",
+    "name": "Dữ liệu hệ gen được tạo ra như thế nào?",
+    "published_at": "2026-10-17T19:52:30Z",
+    "notes": "Bản nháp đầu tiên.\n",
+    "html_url": "https://github.com/datngu/genomics_book/releases/tag/du-lieu-he-gen-v0.1.0",
+    "assets": [
+      {
+        "id": 651436957,
+        "name": "du-lieu-he-gen-v0.1.0.pdf",
+        "size": 327760,
+        "download_count": 0,
+        "updated_at": "2026-10-17T19:52:30Z",
+        "url": "https://github.com/datngu/genomics_book/releases/download/du-lieu-he-gen-v0.1.0/du-lieu-he-gen-v0.1.0.pdf"
+      }
+    ]
+  },
+  {
     "tag": "loi-tua-v0.1.0",
     "chapter": "loi-tua",
     "version": "0.1.0",
