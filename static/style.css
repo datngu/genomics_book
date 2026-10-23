@@ -126,7 +126,6 @@ strong, b { color: var(--accent); font-weight: 600; }
 .log li { display: grid; grid-template-columns: 6.5rem 4rem 1fr; gap: 12px; padding: .45rem 0; border-bottom: 1px solid var(--line); }
 .log time, .log .ver { color: var(--muted); font-variant-numeric: tabular-nums; }
 .log a { color: var(--ink); }
-.log .new { color: var(--muted); font-size: .8rem; margin-left: .4em; }
 @media (max-width: 560px) { .log li { grid-template-columns: 6rem 1fr; } .log .ver { display: none; } }
 
 /* Preface */

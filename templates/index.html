@@ -47,7 +47,7 @@
     <li>
       <time>{{ u.version.date }}</time>
       <span class="ver">v{{ u.version.version }}</span>
-      <span><a href="{{ root }}chapters/{{ u.chapter.id }}/">{{ full_title(u.chapter) }}</a>{% if u.version is sameas u.chapter.versions[-1] %}<span class="new">new</span>{% endif %}</span>
+      <span><a href="{{ root }}chapters/{{ u.chapter.id }}/">{{ full_title(u.chapter) }}</a></span>
     </li>
     {% endfor %}
   </ol>

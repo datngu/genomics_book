@@ -629,7 +629,9 @@ def cmd_build(args) -> None:
         sys.exit(f"build: donation QR {donate['qr']} not found")
     common["donate"] = donate
 
-    render("index.html", "", updates=updates[:8], preface=preface)
+    # The home page shows only the latest release; the full history is on each chapter page and in the feed.
+    latest = [max(updates, key=lambda u: u["version"]["published_at"])] if updates else []
+    render("index.html", "", updates=latest, preface=preface)
     for ch in chapters:
         render("chapter.html", f"chapters/{ch.id}/", chapter=ch)
     # LICENSE is the single source of the copyright text; README must quote it verbatim.
