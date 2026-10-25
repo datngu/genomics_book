@@ -55,5 +55,24 @@
         "url": "https://github.com/datngu/genomics_book/releases/download/luoc-su-v0.1.0/luoc-su-v0.1.0.pdf"
       }
     ]
+  },
+  {
+    "tag": "tu-duy-thong-ke-v0.1.0",
+    "chapter": "tu-duy-thong-ke",
+    "version": "0.1.0",
+    "name": "Tư duy thống kê cho hệ gen học",
+    "published_at": "2026-10-25T10:09:26Z",
+    "notes": "Bản nháp đầu tiên.\n",
+    "html_url": "https://github.com/datngu/genomics_book/releases/tag/tu-duy-thong-ke-v0.1.0",
+    "assets": [
+      {
+        "id": 674706996,
+        "name": "tu-duy-thong-ke-v0.1.0.pdf",
+        "size": 398933,
+        "download_count": 0,
+        "updated_at": "2026-10-25T10:09:25Z",
+        "url": "https://github.com/datngu/genomics_book/releases/download/tu-duy-thong-ke-v0.1.0/tu-duy-thong-ke-v0.1.0.pdf"
+      }
+    ]
   }
 ]
