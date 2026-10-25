@@ -34,3 +34,5 @@ chapters:
     label: "Chương 1"
   - slug: du-lieu-he-gen
     label: "Chương 2"
+  - slug: tu-duy-thong-ke
+    label: "Chương 3"
