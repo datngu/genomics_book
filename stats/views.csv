@@ -28,10 +28,10 @@ date,path,title,event,views
 2026-10-13,read/luoc-su-v0.1.0,Read online,1,2
 2026-10-13,share/facebook/,Facebook,1,1
 2026-10-13,share/linkedin/,LinkedIn,1,1
-2026-10-14,/,Hệ gen học tính toán và Dữ liệu lớn,0,23
+2026-10-14,/,Hệ gen học tính toán và Dữ liệu lớn,0,22
 2026-10-14,/ban-quyen,License - Hệ gen học tính toán và Dữ liệu lớn,0,2
 2026-10-14,/chuong/loi-tua,Lời tựa - Hệ gen học tính toán và Dữ liệu lớn,0,3
-2026-10-14,/chuong/luoc-su,Chương 1. Lược sử sinh học phân tử và sự ra đời của hệ gen học tính toán - Hệ gen học tính toán và Dữ liệu lớn,0,7
+2026-10-14,/chuong/luoc-su,Chương 1. Lược sử sinh học phân tử và sự ra đời của hệ gen học tính toán - Hệ gen học tính toán và Dữ liệu lớn,0,6
 2026-10-14,/thong-ke,Stats - Hệ gen học tính toán và Dữ liệu lớn,0,2
 2026-10-14,download/loi-tua-v0.1.0,Download PDF,1,1
 2026-10-14,download/luoc-su-v0.1.0,Download PDF,1,7
@@ -113,8 +113,11 @@ date,path,title,event,views
 2026-10-26,download/tu-duy-thong-ke-v0.1.0,Download PDF,1,1
 2026-10-26,read/loi-tua-v0.1.0,Read online,1,1
 2026-10-26,read/tu-duy-thong-ke-v0.1.0,Read online,1,1
-2026-10-27,/,Hệ gen học tính toán và Dữ liệu lớn,0,4
+2026-10-27,/,Hệ gen học tính toán và Dữ liệu lớn,0,7
 2026-10-27,/chapters/tu-duy-thong-ke,Chương 3. Tư duy thống kê cho hệ gen học - Hệ gen học tính toán và Dữ liệu lớn,0,1
-2026-10-27,/stats,Stats - Hệ gen học tính toán và Dữ liệu lớn,0,1
+2026-10-27,/license,License - Hệ gen học tính toán và Dữ liệu lớn,0,1
+2026-10-27,/stats,Stats - Hệ gen học tính toán và Dữ liệu lớn,0,3
 2026-10-27,download/du-lieu-he-gen-v0.1.0,Download PDF,1,1
 2026-10-27,download/tu-duy-thong-ke-v0.1.0,Download PDF,1,1
+2026-10-28,/,Hệ gen học tính toán và Dữ liệu lớn,0,2
+2026-10-28,download/tu-duy-thong-ke-v0.1.0,Download PDF,1,1
